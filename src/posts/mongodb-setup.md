@@ -1,0 +1,1 @@
+## MongoDB Atlas Connected\nToday, I successfully connected to my MongoDB Atlas cluster `devops-cluster`, created a database (`devops_db`), inserted test log entries, and retrieved data using MongoDB Shell.
