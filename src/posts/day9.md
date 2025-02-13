@@ -1,0 +1,1 @@
+## Day X: MongoDB Backup Automation\n- Installed and configured AWS CLI.\n- Created an AWS S3 bucket ().\n- Uploaded a test file and verified S3 storage.\n- Automated MongoDB backups with encryption and cron jobs.\n- Successfully pushed encrypted backups to S3 daily at 2 AM.\n

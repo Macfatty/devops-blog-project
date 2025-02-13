@@ -1,7 +1,8 @@
 require("dotenv").config(); // Load environment variables
 const { MongoClient } = require("mongodb");
 
-const uri = process.env.MONGO_URI; // Load MongoDB URI from .env file
+// Load MongoDB URI from .env file
+const uri = process.env.MONGO_URI;
 const client = new MongoClient(uri);
 
 // Function to Log Messages to MongoDB
