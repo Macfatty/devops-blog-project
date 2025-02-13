@@ -1,1 +1,5 @@
 .env
+mongodb-backups/
+mongodb-backups.tar.gz
+mongodb-backups.tar.gz.enc
+
