@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   mongodb-school:
     image: mongo
@@ -21,8 +23,32 @@ services:
     env_file:
       - .env
     environment:
+      - GF_INSTALL_PLUGINS=grafana-mongodb-datasource
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+    networks:
+      - devops-network
+
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    networks:
+      - devops-network
+
+  mongodb-exporter:
+    image: percona/mongodb_exporter:0.39.0
+    container_name: mongodb-exporter
+    restart: unless-stopped
+    command:
+      - "--mongodb.uri=mongodb://mongodb-school:27017"
+      - "--collect-all"  # Forces all available metrics to be collected
+    ports:
+      - "9216:9216"
     networks:
       - devops-network
 
