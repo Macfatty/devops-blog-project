@@ -26,6 +26,9 @@ services:
       - GF_INSTALL_PLUGINS=grafana-mongodb-datasource
       - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD}
+
+    volumes:
+      - grafana_data:/var/lib/grafana
     networks:
       - devops-network
 
@@ -34,6 +37,7 @@ services:
     container_name: prometheus
     restart: unless-stopped
     volumes:
+      - prometheus_data:/prometheus
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
       - "9090:9090"
@@ -54,6 +58,8 @@ services:
 
 volumes:
   mongodb_data:
+  grafana_data:
+  prometheus_data:
 
 networks:
   devops-network:
