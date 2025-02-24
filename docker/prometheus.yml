@@ -1,8 +1,11 @@
 global:
-  scrape_interval: 15s
+  scrape_interval: 15s  # How often Prometheus scrapes metrics
 
 scrape_configs:
-  - job_name: 'mongodb-exporter'
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['mongodb-exporter:9216']
+      - targets: ["localhost:9090"]
 
+  - job_name: "mongodb-exporter"  # ✅ Added MongoDB Exporter
+    static_configs:
+      - targets: ["mongodb-exporter:9216"]
