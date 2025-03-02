@@ -1,0 +1,60 @@
+@model List<DevOpsApp.Models.LogEntry>
+
+<h2>MongoDB Logs</h2>
+
+<!--  Date Range Filter -->
+<form method="get" action="/Logs/Index">
+    <label>Start Date:</label>
+    <input type="date" name="startDate" value="@ViewBag.StartDate" />
+
+    <label>End Date:</label>
+    <input type="date" name="endDate" value="@ViewBag.EndDate" />
+
+    <label>Search:</label>
+    <input type="text" name="query" placeholder="Search logs..." value="@ViewBag.SearchQuery" />
+
+    <label>Sort by:</label>
+    <select name="sort">
+        <option value="Timestamp" selected>Timestamp (Newest)</option>
+        <option value="Id">ID</option>
+        <option value="Message">Message</option>
+    </select>
+
+    <button type="submit" class="btn btn-secondary">Filter</button>
+</form>
+
+<!--  Log Table with Sorting -->
+<table class="table table-striped table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th><a href="?sort=Id">ID</a></th>
+            <th><a href="?sort=Message">Message</a></th>
+            <th><a href="?sort=Timestamp">Timestamp</a></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var log in Model)
+        {
+            <tr>
+                <td>@(log?.Id != null ? log.Id.Substring(0, 8) + "..." : "N/A")</td>
+                <td>@log?.Message ?? "No message"</td>
+                <td>@(log?.Timestamp != default(DateTime) ? log?.Timestamp.ToString("yyyy-MM-dd HH:mm:ss") : "No timestamp")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- ✅ Pagination Controls -->
+<div class="pagination">
+    @if (ViewBag.CurrentPage > 1)
+    {
+        <a class="btn btn-primary" href="/Logs/Index?page=@(ViewBag.CurrentPage - 1)">← Previous</a>
+    }
+
+    <span>Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+
+    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+    {
+        <a class="btn btn-primary" href="/Logs/Index?page=@(ViewBag.CurrentPage + 1)">Next →</a>
+    }
+</div>
+

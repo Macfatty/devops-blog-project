@@ -1,0 +1,14 @@
+services:
+  devopsapp:
+    build: .
+    container_name: devopsapp
+    restart: unless-stopped
+    ports:
+      - "5163:5163"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - devops-network
+
+networks:
+  devops-network:
