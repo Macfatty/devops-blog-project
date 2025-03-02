@@ -3,7 +3,7 @@ name: Build & Push .NET App to DockerHub
 on:
   push:
     branches:
-      - main  #  Runs when code is pushed to 'main' branch
+      - main  # Runs when code is pushed to 'main' branch
 
 jobs:
   build:
@@ -35,13 +35,13 @@ jobs:
 
     - name:  Build Docker Image
       run: |
-        docker build -t macfatty/devopsapp:latest .
-        docker tag macfatty/devopsapp:latest macfatty/devopsapp:${{ github.run_number }}
+        docker build -t macfatty/devops-blog:latest .
+        docker tag macfatty/devops-blog:latest macfatty/devops-blog:${{ github.run_number }}
 
     - name:  Push Docker Image to DockerHub
       run: |
-        docker push macfatty/devopsapp:latest
-        docker push macfatty/devopsapp:${{ github.run_number }}
+        docker push macfatty/devops-blog:latest
+        docker push macfatty/devops-blog:${{ github.run_number }}
 
     - name:  Notify Jenkins to Deploy
       run: curl -X POST http://192.168.1.69:8080/job/Deploy-NetApp/build
