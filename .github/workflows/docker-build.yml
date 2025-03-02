@@ -1,0 +1,47 @@
+name: Build & Push .NET App to DockerHub
+
+on:
+  push:
+    branches:
+      - main  #  Runs when code is pushed to 'main' branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name:  Checkout Repository
+      uses: actions/checkout@v3
+
+    - name:  Set Up .NET 9
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0'
+
+    - name:  Restore Dependencies
+      run: dotnet restore
+
+    - name:  Build the .NET App
+      run: dotnet build --configuration Release --no-restore
+
+    - name:  Publish the App
+      run: dotnet publish -c Release -o ./publish
+
+    - name:  Log in to DockerHub with Access Token
+      uses: docker/login-action@v2
+      with:
+        username: macfatty
+        password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+
+    - name:  Build Docker Image
+      run: |
+        docker build -t macfatty/devopsapp:latest .
+        docker tag macfatty/devopsapp:latest macfatty/devopsapp:${{ github.run_number }}
+
+    - name:  Push Docker Image to DockerHub
+      run: |
+        docker push macfatty/devopsapp:latest
+        docker push macfatty/devopsapp:${{ github.run_number }}
+
+    - name:  Notify Jenkins to Deploy
+      run: curl -X POST http://192.168.1.69:8080/job/Deploy-NetApp/build
